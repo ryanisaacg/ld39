@@ -33,15 +33,12 @@ class Tilemap(object):
     #Return if a given region contains only Falsey values
     def empty(self, x, y, width, height):
         #Check the interior of the box
-        for i in range(int(x), math.ceil(x + width), self.size):
-            for j in range(int(y), math.ceil(y + height), self.size):
+        for i in range(int(x), math.ceil(x + width) + self.size, self.size):
+            for j in range(int(y), math.ceil(y + height) + self.size, self.size):
                 if self.get(i, j):
                     return False
-        #Check the other corners
-        return (self.free(x, y)
-            and self.free(x + width, y)
-            and self.free(x, y + height)
-            and self.free(x + width, y + height))
+        #Nothing was found so the region was empty
+        return True
     #Find the largest amount a rectangle can move
     def move_contact(self, x, y, width, height, speed_x, speed_y):
         #If the object can just move to the desired position
