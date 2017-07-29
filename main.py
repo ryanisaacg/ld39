@@ -10,17 +10,23 @@ image = pyglet.image.load('img.png')
 sprite = pyglet.sprite.Sprite(image, x = 50, y = 50)
 sprite.velocity_x = 0
 sprite.velocity_y = 0
-map = Tilemap(640, 480, 32)
+map = Tilemap(128, 128, 32)
 
 def update(dt):
     sprite.velocity_y -= 0.1
     sprite.velocity_x, sprite.velocity_y = map.slide_contact(sprite.x, sprite.y, sprite.width, sprite.height, sprite.velocity_x, sprite.velocity_y)
     sprite.x += sprite.velocity_x
     sprite.y += sprite.velocity_y
-    if keys[key.A]:
-        print("Left")
     if keys[key.D]:
         print("Right")
+        sprite.velocity_x=0.1
+    elif keys[key.A]:
+        print("Left")
+        sprite.velocity_x=-0.1
+    else:
+        sprite.velocity_x=0
+    print(sprite.x,sprite.y)
+
 
 @window.event
 def on_draw():
