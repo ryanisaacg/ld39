@@ -18,8 +18,11 @@ class Tilemap(object):
         return x >= 0 and y >= 0 and x < self.width and y < self.height
     #Get the value at a given point of the tilemap
     def get(self, x, y):
-        x, y = self.transform(x, y)
-        return self.data[x][y] if self.valid(x, y) else True
+        if self.valid(x, y):
+            x, y = self.transform(x, y)
+            return self.data[x][y]
+        else:
+            return "Out of Bounds"
     #Set the value at a given point in the tilemap
     def set(self, x, y, value):
         x, y = self.transform(x, y)
