@@ -12,17 +12,22 @@ sprite.velocity_x = 0
 sprite.velocity_y = 0
 map = Tilemap(128, 128, 32)
 
+walk_acceleration = 0.2
+max_walk_speed = 4
+gravity = 0.5
+
 def update(dt):
-    sprite.velocity_y -= 0.1
+    sprite.velocity_y -= gravity
     sprite.velocity_x, sprite.velocity_y = map.slide_contact(sprite.x, sprite.y, sprite.width, sprite.height, sprite.velocity_x, sprite.velocity_y)
     sprite.x += sprite.velocity_x
     sprite.y += sprite.velocity_y
     if keys[key.D]:
-        sprite.velocity_x += 0.1
+        sprite.velocity_x = max(sprite.velocity_x + walk_acceleration, 0)
     elif keys[key.A]:
-        sprite.velocity_x -= 0.1
+        sprite.velocity_x = min(sprite.velocity_x - walk_acceleration, 0)
     else:
-        sprite.velocity_x=0
+        sprite.velocity_x = 0
+    sprite.velocity_x = max(min(sprite.velocity_x, 3), -3)
 
 
 @window.event
