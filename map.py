@@ -6,23 +6,23 @@ class Tilemap(object):
         self.size = size
         #Don't modify this directly
         self.data = []
-        for i in range(width / size):
+        for i in range(int(width / size)):
             self.data.append([])
-            for j in range(height / size):
+            for j in range(int(height / size)):
                 self.data[i].append(False)
     #Transform a point from game-space to map-space
     def transform(self, x, y):
         return (int(x / self.size), int(y / self.size))
     #Returns if a given point falls within the map
     def valid(self, x, y):
-        return x >= 0 and y >= 0 and x < width and y < height
+        return x >= 0 and y >= 0 and x < self.width and y < self.height
     #Get the value at a given point of the tilemap
     def get(self, x, y):
-        x, y = transform(x, y)
-        return self.data[x][y]
+        x, y = self.transform(x, y)
+        return self.data[x][y] if self.valid(x, y) else True
     #Set the value at a given point in the tilemap
     def set(self, x, y, value):
-        x, y = transform(x, y)
+        x, y = self.transform(x, y)
         self.data[x][y] = value
     #Checks if a point is free
     def free(self, x, y):
@@ -30,14 +30,15 @@ class Tilemap(object):
     #Return if a given region contains only Falsey values
     def empty(self, x, y, width, height):
         #Check the interior of the box
-        for i in range(x, x + width, self.size):
-            for j in range(y, y + height, self.size):
-                if self.get(x, y):
-                    return false
+        for i in range(int(x), int(x + width), self.size):
+            for j in range(int(y), int(y + height), self.size):
+                if self.get(i, j):
+                    return False
         #Check the other corners
-        return self.free(x + width, y)
+        return (self.free(x, y)
+            and self.free(x + width, y)
             and self.free(x, y + height)
-            and self.free(x + width, y + height)
+            and self.free(x + width, y + height))
     #Find the largest amount a rectangle can move
     def move_contact(self, x, y, width, height, speed_x, speed_y):
         #If the object can just move to the desired position
@@ -61,5 +62,5 @@ class Tilemap(object):
     #Slide an object, allowing it to move part of its velocity for both components
     def slide_contact(self, x, y, width, height, speed_x, speed_y):
         move_x = self.move_contact(x, y, width, height, speed_x, 0)[0]
-        move_y = selfmove_contact(x + move_x, width, height, 0, speed_y)[1]
+        move_y = self.move_contact(x + move_x, y, width, height, 0, speed_y)[1]
         return move_x, move_y
