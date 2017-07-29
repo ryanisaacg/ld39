@@ -44,9 +44,6 @@ class Tilemap(object):
         #If the object can just move to the desired position
         if self.empty(x + speed_x, y + speed_y, width, height):
             return speed_x, speed_y
-        #If the object is stuck and cannot move at all
-        if not self.empty(x, y, width, height):
-            return 0, 0
         #Roll back the speed until the object can move
         try_x = speed_x
         try_y = speed_y
@@ -56,8 +53,8 @@ class Tilemap(object):
         while not self.empty(x + try_x, y + try_y, width, height):
             try_x += delta_try_x
             try_y += delta_try_y
-        if abs(try_x) < 1: try_x = 0
-        if abs(try_y) < 1: try_y = 0
+            if sign(try_x) != sign(speed_x) or sign(try_y) != sign(speed_y):
+                return 0, 0
         return try_x, try_y
     #Slide an object, allowing it to move part of its velocity for both components
     def slide_contact(self, x, y, width, height, speed_x, speed_y):
