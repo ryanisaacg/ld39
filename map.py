@@ -33,8 +33,8 @@ class Tilemap(object):
     #Return if a given region contains only Falsey values
     def empty(self, x, y, width, height):
         #Check the interior of the box
-        for i in range(int(x), int(x + width), self.size):
-            for j in range(int(y), int(y + height), self.size):
+        for i in range(int(x), math.ceil(x + width), self.size):
+            for j in range(int(y), math.ceil(y + height), self.size):
                 if self.get(i, j):
                     return False
         #Check the other corners
