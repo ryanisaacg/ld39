@@ -6,9 +6,9 @@ class Tilemap(object):
         self.size = size
         #Don't modify this directly
         self.data = []
-        for i in range(int(width / size)):
+        for i in range(math.ceil(width / size)):
             self.data.append([])
-            for j in range(int(height / size)):
+            for j in range(math.ceil(height / size)):
                 self.data[i].append(False)
     #Transform a point from game-space to map-space
     def transform(self, x, y):
