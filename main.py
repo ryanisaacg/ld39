@@ -19,10 +19,10 @@ def update(dt):
     sprite.y += sprite.velocity_y
     if keys[key.D]:
         print("Right")
-        sprite.velocity_x=0.1
+        sprite.velocity_x=1
     elif keys[key.A]:
         print("Left")
-        sprite.velocity_x=-0.1
+        sprite.velocity_x=-1
     else:
         sprite.velocity_x=0
     print(sprite.x,sprite.y)
